@@ -1,0 +1,94 @@
+﻿<Window x:Class="GraphApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lt="clr-namespace:GraphApp"
+        xmlns:local="clr-namespace:GraphApp.ViewModels"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="600">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:HomeViewModel}">
+            <Border BorderBrush="Black" BorderThickness="1" Padding="20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Column="0" Grid.Row="0"  Text="ID" VerticalAlignment="Center" />
+                    <TextBox Grid.Row="0" Grid.Column="1"  Text="{Binding ProductId}" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="1"  Text="Name" VerticalAlignment="Center" />
+                    <TextBox Grid.Row="1" Grid.Column="1"  Text="{Binding ProductName}" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="2"  Text="Unit Price" VerticalAlignment="Center" />
+                    <TextBox Grid.Row="2" Grid.Column="1"  Text="{Binding UnitPrice}" />
+
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:ProductsViewModel}">
+            <Grid>
+                <DockPanel Margin="20">
+                    <DockPanel DockPanel.Dock="Top">
+                        <TextBlock Margin="10,2" DockPanel.Dock="Left" Text="Enter variables" VerticalAlignment="Center" />
+                        <TextBox Margin="10,2" Width="50" VerticalAlignment="Center" Text="{Binding Path=FirstTerm, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Margin="10,2" Width="50" VerticalAlignment="Center" Text="{Binding Path=SecondTerm, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox Margin="10,2" Width="50" VerticalAlignment="Center" Text="{Binding Path=ThirdTerm, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Content="Graph" DockPanel.Dock="Left" Margin="10,2" VerticalAlignment="Center"
+                            Command="{Binding Path=DisplayGraphCommand}" Width="100"  />
+                    </DockPanel>
+
+                    <ContentControl Margin="20,10" Content="{Binding Path=CurrentProduct}" />
+                </DockPanel>
+                <DockPanel Margin="20" DockPanel.Dock="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="10,2" Text="{Binding Path=Vertex}" VerticalAlignment="Center"  />
+                        <DataGrid Name="DatagridTable" Margin="10,2" DockPanel.Dock="Left" Width="100" Height="100" ItemsSource="{Binding Path=TableOfValues}" VerticalAlignment="Center" >
+                        
+                    </DataGrid>
+                        <ItemsControl ItemsSource="{Binding LineList}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas Margin="50" Width="100" Height="100"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Line X1="{Binding From.X}" Y1="{Binding From.Y}"
+                      X2="{Binding To.X}" Y2="{Binding To.Y}"
+                      Stroke="DarkGray" StrokeThickness="3"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </DockPanel>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+
+    <DockPanel>
+        <Border DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="0,0,1,0">
+            <ItemsControl ItemsSource="{Binding PageViewModels}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Name}"
+                                Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                CommandParameter="{Binding }"
+                                Margin="2,5"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+
+        <ContentControl Content="{Binding CurrentPageViewModel}" />
+    </DockPanel>
+</Window>
