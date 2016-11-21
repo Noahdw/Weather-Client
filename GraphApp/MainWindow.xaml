@@ -12,6 +12,35 @@
         <DataTemplate DataType="{x:Type local:HomeViewModel}">
             <Border BorderBrush="Black" BorderThickness="1" Padding="20">
                 <Grid>
+                    <ListView ItemsSource="{Binding DailyList}">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Background="DarkKhaki"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding daily.summary}"/>
+                                    
+                                            
+
+                                            
+                                </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        </ListView>
+
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:DrawingViewModel}">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid Width="100" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top">
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -19,21 +48,41 @@
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
-                        <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Column="0" Grid.Row="0"  Text="ID" VerticalAlignment="Center" />
-                    <TextBox Grid.Row="0" Grid.Column="1"  Text="{Binding ProductId}" />
+                    <TextBlock Text="Y offset" Grid.Column="0" Grid.Row="0"></TextBlock>
+                    <TextBox Text="{Binding YOffSet}" Width="40" Height="20" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0"></TextBox>
 
-                    <TextBlock Grid.Column="0" Grid.Row="1"  Text="Name" VerticalAlignment="Center" />
-                    <TextBox Grid.Row="1" Grid.Column="1"  Text="{Binding ProductName}" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="2"  Text="Unit Price" VerticalAlignment="Center" />
-                    <TextBox Grid.Row="2" Grid.Column="1"  Text="{Binding UnitPrice}" />
-
+                    <TextBlock Text="X offset" Grid.Column="0" Grid.Row="1" ></TextBlock>
+                    <TextBox Text="{Binding XOffSet}" Width="40" Height="20" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1"></TextBox>
+                    
                 </Grid>
-            </Border>
+                <Button Content="Graph" HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Command="{Binding Path=CreateGraph}" Width="50"  />
+                <ItemsControl ItemsSource="{Binding GraphLineList}" Margin="3,10">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            
+                            <Canvas Margin="50" Width="100" Height="100"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Line X1="{Binding From.X}" Y1="{Binding From.Y}"
+                                          X2="{Binding To.X}" Y2="{Binding To.Y}"
+                                          Stroke="Black" StrokeThickness=".5"/>
+                           
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    
+                </ItemsControl>
+
+            </Grid>
         </DataTemplate>
+        
+        
+        
 
         <DataTemplate DataType="{x:Type local:ProductsViewModel}">
             <Grid>
@@ -53,19 +102,19 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="10,2" Text="{Binding Path=Vertex}" VerticalAlignment="Center"  />
                         <DataGrid Name="DatagridTable" Margin="10,2" DockPanel.Dock="Left" Width="100" Height="100" ItemsSource="{Binding Path=TableOfValues}" VerticalAlignment="Center" >
-                        
-                    </DataGrid>
+
+                        </DataGrid>
                         <ItemsControl ItemsSource="{Binding LineList}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <Canvas Margin="50" Width="100" Height="100"/>
+                                    <Canvas Margin="50" Width="100" Height="100" Background="LightGray"/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Line X1="{Binding From.X}" Y1="{Binding From.Y}"
-                      X2="{Binding To.X}" Y2="{Binding To.Y}"
-                      Stroke="DarkGray" StrokeThickness="3"/>
+                                          X2="{Binding To.X}" Y2="{Binding To.Y}"
+                                          Stroke="Black" StrokeThickness="1"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

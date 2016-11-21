@@ -23,6 +23,7 @@ namespace GraphApp.ViewModels
             // Add available pages
             PageViewModels.Add(new HomeViewModel());
             PageViewModels.Add(new ProductsViewModel());
+            PageViewModels.Add(new DrawingViewModel());
 
             // Set starting page
             CurrentPageViewModel = PageViewModels[0];

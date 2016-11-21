@@ -168,16 +168,23 @@ namespace GraphApp.ViewModels
             TableOfValues = new ObservableCollection<GraphInfo>();
             LineList = new ObservableCollection<Line>();
             int offSet = 50;
-
-            double vX = (-1 * SecondTerm) / (2 * FirstTerm);
-            double vY = (Math.Pow(vX, 2) * FirstTerm) + (vX * SecondTerm) + ThirdTerm;
-            Math.Round(vX, 2);
-            Math.Round(vY, 2);
-            Point pVertex = new Point(vX, vY);
-            Vertex = pVertex.ToString();
+            if (FirstTerm != 0)
+            {
+                double vX = (-1 * SecondTerm) / (2 * FirstTerm);// -b/2a
+                double vY = (Math.Pow(vX, 2) * FirstTerm) + (vX * SecondTerm) + ThirdTerm; //f(x) evaluated with vX
+                vX = Math.Round(vX, 2);
+                vY = Math.Round(vY, 2);
+                Point pVertex = new Point(vX, vY);
+                Vertex = pVertex.ToString();
+            }
+            else
+            {
+                Vertex = "DNE";
+            }
+    
 
             //Populates a 20 size list with X values and corresponding ax^2 +bx +c =y values
-            for (int x = -11; x <= 10; x++)
+            for (int x = -10; x <= 10; x++)
             {
                 double total,total2;
              
