@@ -101,7 +101,7 @@ namespace GraphApp.ViewModels
         }
 
         
-
+        //
 
         public ICommand DisplayGraphCommand
         {
