@@ -93,12 +93,12 @@
                                         <Grid>
 
                                             <TextBlock  Text="{Binding timeOfDay}" FontSize="13" Grid.Column="0" FontWeight="SemiBold"/>
-                                            <Image Height="40" Source="{Binding imageIconPath}" Grid.Column="1"></Image>
+                                            <Image Height="40" Source="{Binding imageIconPath}" Grid.Column="1" Margin="0,0,0,5"></Image>
                                             <TextBlock Text="{Binding summary}" Grid.Column="2"/>
                                             <TextBlock Text="{Binding temperature, StringFormat= '\{0\}&#186; f'}" Grid.Column="3"/>
                                             <TextBlock Text="{Binding apparentTemperature}" Grid.Column="4"/>
                                             <TextBlock Text="{Binding humidity, StringFormat='\{0\}%'}" Grid.Column="5"/>
-                                            <TextBlock Text="{Binding windSpeed}" Grid.Column="6"/>
+                                            <TextBlock Text="{Binding windSpeed, StringFormat='\{0\} mph'}" Grid.Column="6"/>
 
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="50"/>

@@ -122,6 +122,7 @@ namespace GraphApp.ViewModels
         private int _time;
         private double _humidity;
         private double _windSpeed;
+        private double _apparentTemperature;
         public int time {
             get { return _time; }
             set
@@ -162,7 +163,15 @@ namespace GraphApp.ViewModels
 
             }
         }
-        public double apparentTemperature { get; set; }
+        public double apparentTemperature
+        {
+            get { return _apparentTemperature; }
+            set
+            {
+                _apparentTemperature = Math.Round(value, 0);
+
+            }
+        }
         public double dewPoint { get; set; }
         public double humidity
         {
@@ -172,7 +181,7 @@ namespace GraphApp.ViewModels
         public double windSpeed
         {  
             get { return _windSpeed; }
-            set { }
+            set { _windSpeed = Math.Round(value, 0); }
             
         }
         public int windBearing { get; set; }
