@@ -12,7 +12,7 @@ namespace GraphApp.ViewModels
         #region Fields
 
         private ICommand _changePageCommand;
-
+        private ICommand _displayHourlyView;
         private IPageViewModel _currentPageViewModel;
         private List<IPageViewModel> _pageViewModels;
 
@@ -22,8 +22,10 @@ namespace GraphApp.ViewModels
         {
             // Add available pages
             PageViewModels.Add(new HomeViewModel());
-            PageViewModels.Add(new ProductsViewModel());
-            PageViewModels.Add(new DrawingViewModel());
+         //   PageViewModels.Add(new ProductsViewModel());
+          //  PageViewModels.Add(new DrawingViewModel());
+            PageViewModels.Add(new HourlyView());
+
 
             // Set starting page
             CurrentPageViewModel = PageViewModels[0];
@@ -71,6 +73,26 @@ namespace GraphApp.ViewModels
                     NotifyPropertyChanged("CurrentPageViewModel");
                 }
             }
+        }
+        public ICommand DisplayHourlyView
+        {
+            get
+            {
+                if (_displayHourlyView == null)
+                {
+                    _displayHourlyView = new MVVM.RelayCommand(
+                        param => displayView(),
+                        param => (true)
+                    );
+                }
+
+                return _displayHourlyView;
+            }
+        }
+
+        public void displayView()
+        {
+            CurrentPageViewModel = PageViewModels[1];
         }
 
         #endregion

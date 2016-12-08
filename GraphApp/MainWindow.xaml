@@ -12,30 +12,116 @@
         <DataTemplate DataType="{x:Type local:HomeViewModel}">
             <Border BorderBrush="Black" BorderThickness="1" Padding="20">
                 <Grid>
-                    <ListView ItemsSource="{Binding DailyList}">
+                    <ListView ItemsSource="{Binding DailyList/daily.data}" Style="{DynamicResource DailyListView}" Width="360" HorizontalAlignment="Left">
                         <ListView.ItemsPanel>
+
                             <ItemsPanelTemplate>
-                                <StackPanel Background="DarkKhaki"/>
+                                <StackPanel IsItemsHost="True" Background="{x:Null}" />
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
+
+
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding daily.summary}"/>
-                                    
-                                            
+                                <Border BorderBrush="Black" BorderThickness="2" Padding="10" Width="Auto">
+                                    <Grid Width="300">
+                                    <StackPanel>
+                                       
+                                        <TextBlock Text="{Binding dayOfWeek}" FontSize="13" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding summary}"/>
+                                        <TextBlock Text="{Binding temperatureMax, StringFormat= 'Max: \{0\}&#186; f'}"/>
+                                        <TextBlock Text="{Binding temperatureMin, StringFormat= 'Min: \{0\}&#186; f'}"/>
+                                       
 
-                                            
-                                </StackPanel>
+
+
+                                    </StackPanel>
+                                        <Button Name="ButtonGotoHourly" Content="Hourly report" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                                 Command="{Binding DataContext.DisplayHourlyView, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                
+                                                Height="20" Background="#FFB6B6B6"></Button>
+                                        <Image HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="40" Source="{Binding imageIconPath}">   </Image>
                                 </Grid>
+                                </Border>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-                        </ListView>
+                    </ListView>
 
                 </Grid>
             </Border>
         </DataTemplate>
+
+        
+        
+        <DataTemplate DataType="{x:Type local:HourlyView}">
+            <Grid>
+             
+                <Grid Margin="23,0,0,0">
+
+                    <Label Content="Time" FontSize="13" FontWeight="SemiBold" Grid.Column="0"></Label>
+
+                    <Label Content="Summary" FontSize="13" FontWeight="SemiBold" Grid.Column="1"></Label>
+
+                    <Label Content="Temp" FontSize="13" FontWeight="SemiBold" Grid.Column="2"></Label>
+                    <Label Content="Feels" FontSize="13" FontWeight="SemiBold" Grid.Column="3"></Label>
+                    <Label Content="Humidity" FontSize="13" FontWeight="SemiBold" Grid.Column="4"></Label>
+                    <Label Content="Wind" FontSize="13" FontWeight="SemiBold" Grid.Column="5"></Label>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+
+                </Grid>
+                    <Border BorderBrush="Black" BorderThickness="1" Padding="20">
+                    <Grid>
+                        <ListView ItemsSource="{Binding DailyList/hourly.data}" Style="{DynamicResource DailyListView}" Width="500" HorizontalAlignment="Left">
+                            <ListView.ItemsPanel>
+
+                                <ItemsPanelTemplate>
+                                    <StackPanel IsItemsHost="True" Background="{x:Null}" />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Black" BorderThickness="0,0,0,1"  Padding="0" Width="auto">
+                                        <Grid>
+
+                                            <TextBlock  Text="{Binding timeOfDay}" FontSize="13" Grid.Column="0" FontWeight="SemiBold"/>
+                                            <Image Height="40" Source="{Binding imageIconPath}" Grid.Column="1"></Image>
+                                            <TextBlock Text="{Binding summary}" Grid.Column="2"/>
+                                            <TextBlock Text="{Binding temperature, StringFormat= '\{0\}&#186; f'}" Grid.Column="3"/>
+                                            <TextBlock Text="{Binding apparentTemperature}" Grid.Column="4"/>
+                                            <TextBlock Text="{Binding humidity, StringFormat='\{0\}%'}" Grid.Column="5"/>
+                                            <TextBlock Text="{Binding windSpeed}" Grid.Column="6"/>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50"/>
+                                                <ColumnDefinition Width="50"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="60"/>
+                                                <ColumnDefinition Width="50"/>
+                                                <ColumnDefinition Width="70"/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                    </Grid>
+                </Border>
+              
+            </Grid>
+        </DataTemplate>
+
 
         <DataTemplate DataType="{x:Type local:DrawingViewModel}">
             <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -56,14 +142,14 @@
 
                     <TextBlock Text="X offset" Grid.Column="0" Grid.Row="1" ></TextBlock>
                     <TextBox Text="{Binding XOffSet}" Width="40" Height="20" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1"></TextBox>
-                    
+
                 </Grid>
                 <Button Content="Graph" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Command="{Binding Path=CreateGraph}" Width="50"  />
                 <ItemsControl ItemsSource="{Binding GraphLineList}" Margin="3,10">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            
+
                             <Canvas Margin="50" Width="100" Height="100"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
@@ -72,17 +158,17 @@
                             <Line X1="{Binding From.X}" Y1="{Binding From.Y}"
                                           X2="{Binding To.X}" Y2="{Binding To.Y}"
                                           Stroke="Black" StrokeThickness=".5"/>
-                           
+
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
-                    
+
                 </ItemsControl>
 
             </Grid>
         </DataTemplate>
-        
-        
-        
+
+
+
 
         <DataTemplate DataType="{x:Type local:ProductsViewModel}">
             <Grid>
@@ -96,7 +182,7 @@
                             Command="{Binding Path=DisplayGraphCommand}" Width="100"  />
                     </DockPanel>
 
-                    <ContentControl Margin="20,10" Content="{Binding Path=CurrentProduct}" />
+                  
                 </DockPanel>
                 <DockPanel Margin="20" DockPanel.Dock="Left">
                     <StackPanel Orientation="Horizontal">
@@ -122,6 +208,48 @@
                 </DockPanel>
             </Grid>
         </DataTemplate>
+        <SolidColorBrush x:Key="ListBox.Static.Background" Color="#FF9DBEDA"/>
+        <SolidColorBrush x:Key="ListBox.Static.Border" Color="#FF161617"/>
+        <SolidColorBrush x:Key="ListBox.Disabled.Background" Color="#FFFB2727"/>
+        <SolidColorBrush x:Key="ListBox.Disabled.Border" Color="#FFD9D9D9"/>
+        <Style x:Key="DailyListView" TargetType="{x:Type ListView}">
+            <Setter Property="Background" Value="{StaticResource ListBox.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ListBox.Static.Border}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListView}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="0" SnapsToDevicePixels="true">
+                            <ScrollViewer Focusable="false" Padding="0">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Border}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsGrouping" Value="true"/>
+                                    <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="IsEnabled" Value="True"/>
+        </Style>
     </Window.Resources>
 
     <DockPanel>

@@ -80,7 +80,6 @@
     </Compile>
     <Compile Include="Services\WeatherAccess.cs" />
     <Compile Include="ViewModels\DrawingViewModel.cs" />
-    <Compile Include="ViewModels\ProductModel.cs" />
     <Compile Include="MVVM\ObservableObject.cs" />
     <Compile Include="MVVM\RelayCommand.cs" />
     <Compile Include="ProductsView.cs">
@@ -91,6 +90,7 @@
     </Compile>
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\HourlyViewModel.cs" />
     <Compile Include="ViewModels\IPageViewModel.cs" />
     <Compile Include="ViewModels\ProductsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -141,6 +141,36 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\clear-day.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\clear-night.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\cloudy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\fog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\partly-cloudy-day.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\partly-cloudy-night.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\rain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\sleet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\snow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\wind.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

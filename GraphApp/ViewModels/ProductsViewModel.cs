@@ -20,8 +20,6 @@ namespace GraphApp.ViewModels
         private double _firstTerm;
         private double _secondTerm;
         private double _thirdTerm;
-        private ProductModel _currentProduct;
-        private ICommand _getProductCommand;
         private ICommand _displayGraphCommand;
         private ObservableCollection<Line> _lineList;
 
@@ -51,7 +49,7 @@ namespace GraphApp.ViewModels
 
         public string Name
         {
-            get { return "Products"; }
+            get { return "Graph"; }
         }
         public string Vertex
         {
@@ -102,33 +100,8 @@ namespace GraphApp.ViewModels
             }
         }
 
-        public ProductModel CurrentProduct
-        {
-            get { return _currentProduct; }
-            set
-            {
-                if (value != _currentProduct)
-                {
-                    _currentProduct = value;
-                    NotifyPropertyChanged("CurrentProduct");
-                }
-            }
-        }
+        
 
-        public ICommand GetProductCommand
-        {
-            get
-            {
-                if (_getProductCommand == null)
-                {
-                    _getProductCommand = new RelayCommand(
-                        param => GetProduct(),
-                        param => FirstTerm > 0
-                    );
-                }
-                return _getProductCommand;
-            }
-        }
 
         public ICommand DisplayGraphCommand
         {
@@ -150,16 +123,7 @@ namespace GraphApp.ViewModels
 
         #region Methods
 
-        private void GetProduct()
-        {
-            // Usually you'd get your Product from your datastore,
-            // but for now we'll just return a new object
-            ProductModel p = new ProductModel();
-            // p.ProductId = FirstTerm;
-            p.ProductName = "Test Product";
-            p.UnitPrice = 10;
-            CurrentProduct = p;
-        }
+    
 
         private void calculateValues()
         {

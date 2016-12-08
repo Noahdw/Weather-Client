@@ -1,4 +1,5 @@
-﻿using GraphApp.Services;
+﻿using GraphApp.MVVM;
+using GraphApp.Services;
 using GraphApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace GraphApp.ViewModels
 {
@@ -16,10 +18,10 @@ namespace GraphApp.ViewModels
             DailyList = new ObservableCollection<RootObject>();
             WeatherAccess weather = new WeatherAccess();
             DailyList.Add(weather.getWeatherForecast());
-           
-           
+            Name = "7 Day";
         }
-       
+
+        private ICommand _displayHourlyView;
         private ObservableCollection<RootObject> _dailyList;
         
         public ObservableCollection<RootObject> DailyList
@@ -33,19 +35,50 @@ namespace GraphApp.ViewModels
                     NotifyPropertyChanged("DailyList");
                 }
             }
-        }    
-      
+        }
+        public static DateTime UnixTimeStampToDateTime(int unixTimeStamp)
+        {
+            // Unix timestamp is seconds past epoch
+            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dtDateTime;
+        }
 
+        public ICommand DisplayHourlyView
+        {
+            get
+            {
+                if (_displayHourlyView == null)
+                {
+                    _displayHourlyView = new RelayCommand(
+                        param => displayView(),
+                        param => (true)
+                    );
+                }
 
+                return _displayHourlyView;
+            }
+        }
 
+        public void displayView()
+        {
+
+        }
+
+        private string _name;
         public string Name
         {
             get
             {
-                return "Home Page";
+                return _name;
+            }
+            set {
+                _name = value;
             }
         }
+        
     }
+    #region RootObject weather
 
     public class Currently
     {
@@ -54,8 +87,8 @@ namespace GraphApp.ViewModels
         public string icon { get; set; }
         public int nearestStormDistance { get; set; }
         public int nearestStormBearing { get; set; }
-        public int precipIntensity { get; set; }
-        public int precipProbability { get; set; }
+        public double precipIntensity { get; set; }
+        public double precipProbability { get; set; }
         public double temperature { get; set; }
         public double apparentTemperature { get; set; }
         public double dewPoint { get; set; }
@@ -71,8 +104,8 @@ namespace GraphApp.ViewModels
     public class Datum
     {
         public int time { get; set; }
-        public int precipIntensity { get; set; }
-        public int precipProbability { get; set; }
+        public float precipIntensity { get; set; }
+        public float precipProbability { get; set; }
     }
 
     public class Minutely
@@ -84,22 +117,72 @@ namespace GraphApp.ViewModels
 
     public class Datum2
     {
-        public int time { get; set; }
+        private double _temperature;
+        private string _icon;
+        private int _time;
+        private double _humidity;
+        private double _windSpeed;
+        public int time {
+            get { return _time; }
+            set
+            {
+                _time = value;
+
+                DateTime dt = HomeViewModel.UnixTimeStampToDateTime(value);
+                DateTime hour = DateTime.Now;
+
+                if (dt.Hour == hour.Hour)
+                {
+                    timeOfDay = "Now";
+                }
+                else
+                {
+                    timeOfDay = dt.ToString("hh:tt");
+                }
+            }
+        }
         public string summary { get; set; }
-        public string icon { get; set; }
+        public string icon
+        {
+            get { return _icon; }
+            set
+            {
+                _icon = value;
+                imageIconPath = "pack://application:,,,/Media/" + icon + ".png";
+            }
+        }
         public double precipIntensity { get; set; }
         public double precipProbability { get; set; }
-        public double temperature { get; set; }
+        public double temperature
+        {
+            get { return _temperature; }
+            set
+            {
+                _temperature = Math.Round(value, 0);
+
+            }
+        }
         public double apparentTemperature { get; set; }
         public double dewPoint { get; set; }
-        public double humidity { get; set; }
-        public double windSpeed { get; set; }
+        public double humidity
+        {
+            get { return _humidity; }
+            set { _humidity = value * 100; }
+        }
+        public double windSpeed
+        {  
+            get { return _windSpeed; }
+            set { }
+            
+        }
         public int windBearing { get; set; }
         public double visibility { get; set; }
         public double cloudCover { get; set; }
         public double pressure { get; set; }
         public double ozone { get; set; }
         public string precipType { get; set; }
+        public string timeOfDay { get; set; }
+        public string imageIconPath { get; set; }
     }
 
     public class Hourly
@@ -111,9 +194,38 @@ namespace GraphApp.ViewModels
 
     public class Datum3
     {
-        public int time { get; set; }
+        private double _temperatureMin;
+        private double _temperatureMax;
+        private int _time;
+        private string _icon;
+        public int time
+        {
+            get { return _time; }
+            set {
+                _time = value;
+                
+                DateTime dt = HomeViewModel.UnixTimeStampToDateTime(value);
+                DateTime today = DateTime.Now;
+                
+                if (dt.DayOfYear == today.DayOfYear )
+                {
+                    dayOfWeek = "Today";
+                }
+                else
+                {
+                    dayOfWeek = dt.DayOfWeek.ToString();
+                }
+            }
+        }
         public string summary { get; set; }
-        public string icon { get; set; }
+        public string icon
+        {
+            get { return _icon; }
+            set {
+                _icon = value;
+                imageIconPath = "pack://application:,,,/Media/" + icon + ".png";
+            }
+        }
         public int sunriseTime { get; set; }
         public int sunsetTime { get; set; }
         public double moonPhase { get; set; }
@@ -122,9 +234,25 @@ namespace GraphApp.ViewModels
         public int precipIntensityMaxTime { get; set; }
         public double precipProbability { get; set; }
         public string precipType { get; set; }
-        public double temperatureMin { get; set; }
+        public double temperatureMin
+        {
+            get { return _temperatureMin; }
+            set
+            {
+                _temperatureMin = Math.Round(value, 0);
+         
+            }
+        }
         public int temperatureMinTime { get; set; }
-        public double temperatureMax { get; set; }
+        public double temperatureMax
+        {
+            get { return _temperatureMax; }
+            set
+            {
+                _temperatureMax = Math.Round(value, 0);
+
+            }
+        }
         public int temperatureMaxTime { get; set; }
         public double apparentTemperatureMin { get; set; }
         public int apparentTemperatureMinTime { get; set; }
@@ -138,6 +266,9 @@ namespace GraphApp.ViewModels
         public double cloudCover { get; set; }
         public double pressure { get; set; }
         public double ozone { get; set; }
+        public string dayOfWeek { get; set; }
+        public string imageIconPath { get; set; }
+
     }
 
     public class Daily
@@ -156,9 +287,7 @@ namespace GraphApp.ViewModels
         public string uri { get; set; }
     }
 
- 
-
-public class RootObject
+    public class RootObject
 {
         public RootObject()
         {
@@ -175,4 +304,14 @@ public class RootObject
     public List<Alert> alerts { get; set; }
 
 }
+    #endregion
+
+    public class HourlyView : HomeViewModel {
+        public HourlyView()
+        {
+            Name = "Hourly";
+        }
+    }
+
+  
 }
